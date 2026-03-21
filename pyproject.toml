@@ -42,7 +42,7 @@ quote-style = 'single'
 
 [tool.semantic_release]
 version_toml = ["pyproject.toml:project.version"]
-version_variables = ["kubesure/__version__.py:__version__:nf"]
+version_variables = ["src/kubesure/__version__.py:__version__:nf"]
 build_command = "uv build"
 upload_to_vcs_release = true
 hvcs = "github"
@@ -59,7 +59,7 @@ changelog_file = "CHANGELOG.md"
 patch_tags = ["chore", "fix", "refactor"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["kubesure"]
+packages = ["src/kubesure"]
 
 [build-system]
 requires = ["hatchling"]

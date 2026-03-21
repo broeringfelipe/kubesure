@@ -1,6 +1,6 @@
 import typer
 
-from kubesure import __version__
+from kubesure.__version__ import __version__
 
 app = typer.Typer(
     help='Kubesure: Static validation and standardization of k8s manifests.',
