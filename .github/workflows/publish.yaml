@@ -56,7 +56,7 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to GitHub Container Registry (GHCR)
@@ -81,7 +81,7 @@ jobs:
 
           # TODO: Uncomment this when the release workflow is ready
           # tags: |
-          #   ${{ secrets.DOCKERHUB_USERNAME }}/kubesure:latest
-          #   ${{ secrets.DOCKERHUB_USERNAME }}/kubesure:${{ github.event.release.tag_name }}
+          #   ${{ vars.DOCKERHUB_USERNAME }}/kubesure:latest
+          #   ${{ vars.DOCKERHUB_USERNAME }}/kubesure:${{ github.event.release.tag_name }}
           #   ghcr.io/${{ github.repository }}:latest
           #   ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }}

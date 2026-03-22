@@ -27,6 +27,57 @@ jobs:
         with:
           python-version: "3.14"
 
+      - name: Apply version suffix
+        env:
+          VERSION_SUFFIX: ${{ inputs.version_suffix }}
+        run: |
+          python << 'PY'
+          import os
+          import re
+          from pathlib import Path
+
+          suffix = (os.environ.get("VERSION_SUFFIX") or "").strip() or "dev0"
+          if suffix == "dev":
+              suffix = "dev0"
+
+          pyproject = Path("pyproject.toml").read_text(encoding="utf-8")
+          m = re.search(r'^version\s*=\s*"([^"]+)"', pyproject, re.MULTILINE)
+          if not m:
+              raise SystemExit("Could not read project.version from pyproject.toml")
+          base = m.group(1)
+
+          if suffix.startswith("dev"):
+              new_version = f"{base}.{suffix}"
+          elif re.match(r"^(rc|a|b)\d+", suffix):
+              new_version = f"{base}{suffix}"
+          else:
+              new_version = f"{base}.{suffix}"
+
+          pyproject_new = re.sub(
+              r'^version\s*=\s*"[^"]+"',
+              f'version = "{new_version}"',
+              pyproject,
+              count=1,
+              flags=re.MULTILINE,
+          )
+          Path("pyproject.toml").write_text(pyproject_new, encoding="utf-8")
+
+          ver_file = Path("src/kubesure/__version__.py")
+          text = ver_file.read_text(encoding="utf-8")
+          ver_file.write_text(
+              re.sub(
+                  r"^__version__\s*=\s*'[^']+'",
+                  f"__version__ = '{new_version}'",
+                  text,
+                  count=1,
+                  flags=re.MULTILINE,
+              ),
+              encoding="utf-8",
+          )
+
+          print(f"Publishing as {new_version}")
+          PY
+
       - name: Build with uv
         run: uv build
 
