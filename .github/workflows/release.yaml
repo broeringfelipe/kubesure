@@ -17,7 +17,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run Python Semantic Release
-        uses: python-semantic-release/python-semantic-release@v10
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --frozen --group dev
+
+      - name: Run Python Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          uv run semantic-release version
+          uv run semantic-release publish
