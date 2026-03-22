@@ -1,4 +1,4 @@
-name: Kubesure CI
+name: CI
 
 on:
   push:

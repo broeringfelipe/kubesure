@@ -1,4 +1,4 @@
-name: Publish Official
+name: Publish
 
 # TODO: Remove this when the release workflow is ready
 on:
