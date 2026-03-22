@@ -2,6 +2,11 @@ name: Publish to TestPyPI
 
 on:
   workflow_dispatch:
+    inputs:
+      version_suffix:
+        description: 'Version suffix (ex: dev1, rc1)'
+        required: false
+        default: 'dev'
 
 jobs:
   publish-testpypi:
